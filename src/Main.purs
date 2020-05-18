@@ -1,23 +1,32 @@
 module Main where
 
-import Prelude
-import Data.List
-import Data.Maybe
+import Prelude (Unit, negate, show, ($), (*), (+), (-), (/), (==))
+import Data.List.Lazy (List, nil, (:))
+import Data.Maybe (Maybe(..))
 import Effect (Effect)
 import Effect.Console (log)
-import Math (pow)
+import Math (pow, sqrt)
 
-{- For now, just Number -}
-quads :: Number -> Number -> Number -> Maybe (List Number)
-quads a b c = 
-  let 
-    under_radical = (pow b 2.0) - (4.0 * a * c)
-  in
-    if under_radical < 0.0 then
-      Nothing
+type QuadraticPolynomial
+  = { quadratic :: Number, linear :: Number, constant :: Number }
+
+make_quadratic :: Number -> Number -> Number -> QuadraticPolynomial
+make_quadratic a b c = { quadratic: a, linear: b, constant: c }
+
+quadratic_formula :: QuadraticPolynomial -> List Number
+quadratic_formula exp =
+  if exp.quadratic == 0.0 then
+    nil
+  else
+    if rad == 0.0 then
+      root (+) : nil
     else
-      Just (((negate b) + under_radical) / (2.0 * a) : ((negate b) - under_radical) / (2.0 * a) : Nil)
+      root (+) : root (-) : nil
+  where
+  rad = (pow 2.0 exp.linear) - 4.0 * exp.quadratic * exp.constant
+
+  root sign = (sign (negate exp.linear) (sqrt rad) / (2.0 * exp.quadratic))
 
 main :: Effect Unit
 main = do
-  log $ show (quads 2.0 4.0 0.0)
+  log $ show (quadratic_formula (make_quadratic 1.0 7.0 10.0)) {- should be -2.0 and -5.0 -}

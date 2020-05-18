@@ -29,4 +29,4 @@ Compiling Partial
 $
 ```
 
-Use `spago repl` to enter a project REPL, `spago test` to run the tests, or `spago run` to execute `main`.
+Use `spago repl` to enter a project REPL, `spago test` to run the tests, or `spago run` to execute `main`.  Use `spago bundle-app` to produce the optimized production bundle at `index.js`.
