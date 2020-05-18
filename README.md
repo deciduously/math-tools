@@ -8,7 +8,7 @@ I'm learning PureScript and Calculus for the first time this summer.  Behold.
 * [PureScript](https://www.purescript.org/).  Try `npm i -g purescript`.  The `npm` Node Package Manager executable should have been installed alongside `node`.
 * [Spago](https://github.com/purescript/spago) - the PureScript package manager.  Try `npm i -g spago`.
 
-Make sure `$HOME/.local/bin` is in your path.
+It's also helpful to set up [`stack`](https://docs.haskellstack.org/en/stable/README/).  After installing, run `stack config set resolver ghc-8.6.5` because GCH 8.6.* seems to have better ecosystem support than 8.8.*, and then run `stack setup` to install the Haskell compiler.  Make sure `$HOME/.local/bin` is in your path, as that's where `stack install` will place executable binaries.
 
 ## Usage
 
