@@ -1,8 +1,8 @@
 module Main where
 
 import Prelude (Unit, negate, show, ($), (*), (+), (-), (/), (==))
+import Data.Foldable (sum)
 import Data.List.Lazy (List, nil, (:))
-import Data.Maybe (Maybe(..))
 import Effect (Effect)
 import Effect.Console (log)
 import Math (pow, sqrt)
@@ -13,20 +13,29 @@ type QuadraticPolynomial
 make_quadratic :: Number -> Number -> Number -> QuadraticPolynomial
 make_quadratic a b c = { quadratic: a, linear: b, constant: c }
 
+{- Solve for the y-intercepts of a quadratic polynomical via the quadratic formula -}
 quadratic_formula :: QuadraticPolynomial -> List Number
 quadratic_formula exp =
   if exp.quadratic == 0.0 then
     nil
   else
-    if rad == 0.0 then
+    if discriminant == 0.0 then
       root (+) : nil
     else
       root (+) : root (-) : nil
   where
-  rad = (pow 2.0 exp.linear) - 4.0 * exp.quadratic * exp.constant
+  discriminant = (pow 2.0 exp.linear) - 4.0 * exp.quadratic * exp.constant
 
-  root sign = (sign (negate exp.linear) (sqrt rad) / (2.0 * exp.quadratic))
+  root sign = sign (negate exp.linear) (sqrt discriminant) / (2.0 * exp.quadratic)
+
+showQuadratic :: Number -> Number -> Number -> String
+showQuadratic a b c =
+  let
+    polynomial = make_quadratic a b c
+  in
+    show $ quadratic_formula polynomial
 
 main :: Effect Unit
 main = do
-  log $ show (quadratic_formula (make_quadratic 1.0 7.0 10.0)) {- should be -2.0 and -5.0 -}
+  {- should be 1.0 and -3.0 -}
+  log $ showQuadratic 2.0 4.0 (negate 6.0)
