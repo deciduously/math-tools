@@ -1,8 +1,8 @@
 module Main where
 
-import Prelude (Unit, negate, show, ($), (*), (+), (-), (/), (==))
+import Prelude (Unit, negate, show, ($), (*), (+), (-), (/), (<>), (==))
 import Data.Foldable (sum)
-import Data.List.Lazy (List, nil, (:))
+import Data.List.Lazy (List, head, length, nil, tail, (:))
 import Effect (Effect)
 import Effect.Console (log)
 import Math (pow, sqrt)
@@ -32,8 +32,15 @@ showQuadratic :: Number -> Number -> Number -> String
 showQuadratic a b c =
   let
     polynomial = make_quadratic a b c
+
+    result = quadratic_formula polynomial
+
+    base = "Intercepts: "
   in
-    show $ quadratic_formula polynomial
+    case length result of
+      0 -> base <> "No intercepts"
+      1 -> base <> (head result)
+      2 -> (base <> (head result)) <> (head (tail result))
 
 main :: Effect Unit
 main = do
