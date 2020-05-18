@@ -1,5 +1,7 @@
 # math-tools
 
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/deciduously/math-tools/PureScript)](https://github.com/deciduously/math-tools/actions)
+
 I'm learning PureScript and Calculus for the first time this summer.  Behold.
 
 ## Dependencies
