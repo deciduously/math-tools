@@ -1,8 +1,8 @@
 module Main where
 
 import Prelude (Unit, negate, show, ($), (*), (+), (-), (/), (<>), (==))
-import Data.Foldable (sum)
-import Data.List.Lazy (List, head, length, nil, tail, (:))
+import Data.List.Lazy (List, head, length, nil, (:), (!!))
+import Data.Maybe (Maybe, fromMaybe)
 import Effect (Effect)
 import Effect.Console (log)
 import Math (pow, sqrt)
@@ -13,7 +13,7 @@ type QuadraticPolynomial
 make_quadratic :: Number -> Number -> Number -> QuadraticPolynomial
 make_quadratic a b c = { quadratic: a, linear: b, constant: c }
 
-{- Solve for the y-intercepts of a quadratic polynomical via the quadratic formula -}
+{- Solve for the y-intercepts of a quadratic polynomial via the quadratic formula -}
 quadratic_formula :: QuadraticPolynomial -> List Number
 quadratic_formula exp =
   if exp.quadratic == 0.0 then
@@ -39,8 +39,12 @@ showQuadratic a b c =
   in
     case length result of
       0 -> base <> "No intercepts"
-      1 -> base <> (head result)
-      2 -> (base <> (head result)) <> (head (tail result))
+      1 -> base <> (show (extractMaybe (head result)))
+      2 -> base <> (show (extractMaybe (head result))) <> ", " <> show (extractMaybe (result !! 1))
+      _ -> "More than two interceps returned - something has gone awry"
+  where
+  extractMaybe :: Maybe Number -> Number
+  extractMaybe m = fromMaybe (negate 1.0) m
 
 main :: Effect Unit
 main = do
