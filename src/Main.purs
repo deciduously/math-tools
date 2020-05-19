@@ -26,14 +26,12 @@ quadratic_formula exp =
   where
   discriminant = (pow 2.0 exp.linear) - 4.0 * exp.quadratic * exp.constant
 
-  root sign = sign (negate exp.linear) (sqrt discriminant) / (2.0 * exp.quadratic)
+  root sign = sign (-exp.linear) (sqrt discriminant) / (2.0 * exp.quadratic)
 
 showQuadratic :: Number -> Number -> Number -> String
 showQuadratic a b c =
   let
-    polynomial = make_quadratic a b c
-
-    result = quadratic_formula polynomial
+    result = quadratic_formula $ make_quadratic a b c
 
     base = "Intercepts: "
   in
@@ -41,12 +39,13 @@ showQuadratic a b c =
       0 -> base <> "No intercepts"
       1 -> base <> (show (extractMaybe (head result)))
       2 -> base <> (show (extractMaybe (head result))) <> ", " <> show (extractMaybe (result !! 1))
-      _ -> "More than two interceps returned - something has gone awry"
+      _ -> "More than two intercepts returned - something has gone awry"
   where
   extractMaybe :: Maybe Number -> Number
-  extractMaybe m = fromMaybe (negate 1.0) m
+  {- The -1 sentinel value is terrible, but it will never happen.  We already determined that it WILL be a Just. -}
+  extractMaybe = fromMaybe (negate 1.0)
 
 main :: Effect Unit
 main = do
   {- should be 1.0 and -3.0 -}
-  log $ showQuadratic 2.0 4.0 (negate 6.0)
+  log $ showQuadratic 1.0 6.0 (-40.0)
